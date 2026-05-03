@@ -17,30 +17,27 @@ export class IpaasSDK {
         this.logger = new Logger(config.debug ?? true);
     }
 
-    async emit(event: string, payload: any) {
-        validateEvent(event, payload);
-
-        this.logger.info('sending event', { event });
+    async emit(payload: any) {
+        validateEvent(payload);
 
         try {
             const result = await retry(
                 () =>
-                    this.client.send('/sdk/events', {
-                        event,
+                    this.client.send('/execute', {
+                        entity: this.config.entity,
+                        entity_type: this.config.entity_type,
                         payload,
                     }),
+                    
                 {
                     retries: this.config.retries ?? 3,
                     delayMs: this.config.retryDelayMs ?? 1000,
                 },
             );
 
-            this.logger.info('event sent', { event });
-
             return result;
         } catch (error: any) {
             this.logger.error('event failed', {
-                event,
                 error: error.message,
             });
 

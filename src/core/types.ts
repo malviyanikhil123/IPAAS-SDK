@@ -1,7 +1,7 @@
-export interface SDKConfig {
-    apiKey: string;
-    baseUrl?: string;
-}
+// export interface SDKConfig {
+//     apiKey: string;
+//     baseUrl?: string;
+// }
 
 export interface EmitPayload {
     event: string;
@@ -18,6 +18,8 @@ export interface ConnectorMeta {
 export interface SDKConfig {
     apiKey: string;
     baseUrl?: string;
+    entity: string;
+    entity_type: string;
     retries?: number;
     retryDelayMs?: number;
     debug?: boolean;
